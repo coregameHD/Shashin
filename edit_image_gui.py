@@ -2,14 +2,26 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import colorchooser
 from tkinter import filedialog
+from PIL import Image, ImageEnhance, ImageDraw, ImageFont, ImagePalette, ImageFilter, ImageChops
+
+import backend
 
 class ShashinImageEditor:
     def about_dialog(self):
         messagebox.showinfo("About", "Built with Love")
+        return
 
     def buttonFilter(self):
         mycolor = colorchooser.askcolor()
-        print(mycolor)
+        colorRGBA = tuple(map(int, mycolor[0])) + (0,)
+        print(colorRGBA)
+        backend.imgColourFilter(colorRGBA)
+        return
+
+    def buttonFrame(self):
+        backend.imgFrame()
+        return
+
 
     def __init__(self):
         # Root window
@@ -70,9 +82,10 @@ class ShashinImageEditor:
                      command = self.buttonFilter).grid(row = 5, column = 1)
         bt5 = Button(buttonFrame,
                      background = buttonBGColor,
-                     text = "Covers",
+                     text = "Frame",
                      width=buttonWidth,
-                     height=buttonHeight).grid(row = 6, column = 1)
+                     height=buttonHeight,
+                     command = self.buttonFrame).grid(row = 6, column = 1)
         bt6 = Button(buttonFrame,
                      background = buttonBGColor,
                      text = "Contrast",
