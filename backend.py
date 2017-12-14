@@ -1,72 +1,108 @@
 from PIL import Image, ImageEnhance, ImageDraw, ImageFont, ImagePalette, ImageFilter, ImageChops
 # Importing Image
-image = Image.open("test_2.png").convert('RGBA')
-print(image.format, image.size, image.mode)
+original = Image.open("input.png").convert('RGBA')
+original = original.resize((800,600))
 
 # Font handling
 font = ImageFont.truetype('fonts/halfpixfont.ttf', 42)
 
+# Initialisation
+original.save("./temp.png")
+image = Image.open("temp.png").convert('RGBA')
+print(image.format, image.size, image.mode)
+
 # Constrast
-def imgContrast(inpImg = image, amount = 0.5):
-    flt = ImageEnhance.Contrast(inpImg)
+def imgContrast(amount = 0.5):
+    image = Image.open("temp.png").convert('RGBA')
+    flt = ImageEnhance.Contrast(image)
     out = flt.enhance(amount)
+    out.save("./temp.png")
+    return out
+
+# Brightness
+def imgBrightness(amount = 0.5):
+    image = Image.open("temp.png").convert('RGBA')
+    flt = ImageEnhance.Brightness(image)
+    out = flt.enhance(amount)
+    out.save("./temp.png")
     return out
 
 # Greyscale
-def imgGreyscale(inpImg = image):
-    imageGrey = inpImg.convert('L')
+def imgGreyscale():
+    image = Image.open("temp.png").convert('RGBA')
+    imageGrey = image.convert('L')
     out = imageGrey.convert('RGBA')
     return out
 
 # Palette
-def imgPalette(inpImg = image):
-    imagePal = inpImg.convert('P', palette=Image.ADAPTIVE, colors=32)
+def imgPalette():
+    image = Image.open("temp.png").convert('RGBA')
+    imagePal = image.convert('P', palette=Image.ADAPTIVE, colors=32)
     out = imagePal.convert('RGBA')
     return out
 
 # Beauty
-def imgBeauty(inpImg = image):
+def imgBeauty():
+    image = Image.open("temp.png").convert('RGBA')
     fltBeauBlur = ImageFilter.GaussianBlur(3)
-    imageBeauBlur = inpImg.filter(fltBeauBlur)
-    imageBeauLight = ImageChops.lighter(inpImg, imageBeauBlur)
-    fltBeauSharp = ImageEnhance.Sharpness(inpImg)
+    imageBeauBlur = image.filter(fltBeauBlur)
+    imageBeauLight = ImageChops.lighter(image, imageBeauBlur)
+    fltBeauSharp = ImageEnhance.Sharpness(image)
     imageBeauSharp = fltBeauSharp.enhance(2.0)
     imageBeauBlend = ImageChops.blend(imageBeauSharp, imageBeauLight, 0.7)
-    out = imgContrast(imageBeauBlend, 1.2)
+    flt = ImageEnhance.Contrast(imageBeauBlend)
+    out = flt.enhance(1.2)
+    out.save("./temp.png")
     return out
 
 # Frame
-def imgFrame(inpImg = image):
-    imageFrame = Image.open("frames/frame_50.png").convert('RGBA')
-    out = Image.alpha_composite(inpImg, imageFrame)
-    return out.show()
-
-# Colour Filter
-def imgColourFilter(colour, inpImg = image, amount = 0.5):
-    imageFilter = Image.new('RGBA', inpImg.size, colour)
-    imageFilterChop = ImageChops.blend(inpImg, imageFilter, 1)
-    out = ImageChops.blend(inpImg, imageFilterChop, amount)
-    return out.show()
-
-# Tint
-def imgTint(colour, inpImg = image, amount = 0.5):
-    imageGS = imgGreyscale(inpImg)
-    imageFilter = Image.new('RGBA', inpImg.size, colour)
-    imageFilterChop = ImageChops.blend(imageGS, imageFilter, 1)
-    out = ImageChops.blend(imageGS, imageFilterChop, amount)
-    return out.show()
-
-# Image Filter
-def imgImgFilter(inpImg = image, amount = 0.5):
-    imageFilter = Image.open("filters/filter_ussr.png").convert('RGBA')
-    imageFilterChop = ImageChops.blend(inpImg, imageFilter, 1)
-    out = ImageChops.blend(inpImg, imageFilterChop, amount)
-    return out.show()
+def imgFrame(filepath):
+    image = Image.open("temp.png").convert('RGBA')
+    imageFrame = Image.open(filepath).convert('RGBA')
+    imageFrame = imageFrame.resize((800,600))
+    out = Image.alpha_composite(image, imageFrame)
+    out.save("./temp.png")
+    return out
 
 # Text
-def imgText(inpString, inpImg = image):
+def imgSticker(filepath, position):
+    image = Image.open("temp.png").convert('RGBA')
+    sticker = Image.open(filepath).convert('RGBA')
+    sticker = sticker.resize((160,160))
+    image.paste(sticker,position,sticker)
+    image.save("./temp.png")
+    return image
+
+# Colour Filter
+def imgColourFilter(colour):
+    image = Image.open("temp.png").convert('RGBA')
+    imageFilter = Image.new('RGBA', image.size, colour)
+    out = ImageChops.screen(image, imageFilter)
+    out.save("./temp.png")
+    return out
+
+# Tint
+def imgTint(colour):
+    image = Image.open("temp.png").convert('RGBA')
+    imageGS = imgGreyscale()
+    imageFilter = Image.new('RGBA', image.size, colour)
+    out = ImageChops.screen(imageGS, imageFilter)
+    out.save("./temp.png")
+    return out
+
+# Image Filter
+def imgImgFilter(amount = 0.5):
+    image = Image.open("temp.png").convert('RGBA')
+    imageFilter = Image.open("filters/filter_ussr.png").convert('RGBA')
+    imageFilterChop = ImageChops.blend(image, imageFilter, 1)
+    out = ImageChops.blend(image, imageFilterChop, amount)
+    return out
+
+# Text
+def imgText(inpString):
+    image = Image.open("temp.png").convert('RGBA')
     text = Image.new('RGBA', image.size, (255, 255, 255, 0))
     textDraw = ImageDraw.Draw(text)
     textDraw.text((50, 5), inpString, font=font, fill=(255, 0, 0, 255))
-    out = Image.alpha_composite(inpImg, text)
+    out = Image.alpha_composite(image, text)
     return out
