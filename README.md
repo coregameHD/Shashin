@@ -1,2 +1,0 @@
-# Shashin
-Interactive Photo Booth
