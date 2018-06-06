@@ -10,10 +10,15 @@ The purpose of the project is to create a photo booth akin to those popular in J
 ## Justification
 The reason this project was chosen is because the project is challenging enough to be considered an adequate group project, whilst being not too technical to be unmanageable. This means that it should be ideal for the limited time that we have to complete the project. Furthermore, the project utilises and explores into a wide scope of topics such as programming in Python and Assembly, Facial recognition and image processing with OpenCV, working with the Raspberry Pi, and constructing a physical encasement for the machine, thus offering a wide variety of opportunities in which many skills can be learned, practiced, and displayed.
 
-## Screenshot
-_Shashin_ run on Raspberry Pi 3
+## Screenshots
+_Shashin_ runs on Raspberry Pi 3
+
 ![Screenshot](https://i.imgur.com/HFyGYjF.png)
 
+![Sticker](https://i.imgur.com/rbJbho6.jpg)
+
+Live Demo: https://www.youtube.com/watch?v=W1xiFRXjGc8
+
 ## Developers
-- @coregameHD
-- @squidpurin
+- [coregameHD](https://github.com/coregameHD)
+- [squidpurin](https://github.com/squidpurin)
