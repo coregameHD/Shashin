@@ -17,8 +17,6 @@ _Shashin_ runs on Raspberry Pi 3
 
 ![Sticker](https://i.imgur.com/rbJbho6.jpg)
 
-Live Demo: https://www.youtube.com/watch?v=W1xiFRXjGc8
-
 ## Developers
 - [coregameHD](https://github.com/coregameHD)
 - [squidpurin](https://github.com/squidpurin)
